@@ -50,8 +50,8 @@ import copy
 import os
 import sys
 import time
-
 import numpy as np
+
 
 # --- Import guard: srozumitelna hlaska misto holeho ImportError ----------------
 try:

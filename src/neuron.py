@@ -135,12 +135,13 @@ class Neuron:
             Cesta k vystupnimu .npz souboru.
         """
         # assert  Ověřte, že self.linear.weights je typu np.ndarray
-        raise NotImplementedError(
-            "Úkol: sestavte slovnik klicu {'weights':..., 'activation_name':...} "
-            "(pripadne 'bias' pokud self.linear.bias is not None a 'temperature' "
-            "pokud je self.activation instance Sigmoid) a ulozte ho pomoci "
-            "np.savez(path, **slovnik)."
-        )
+        assert isinstance(self.linear.weights, np.ndarray)
+        data = {"weights": self.linear.weights, "activation_name": type(self.activation).__name__}
+        if self.linear.bias is not None:
+            data["bias"] = self.linear.bias
+        if isinstance(self.activation, Sigmoid):
+            data["temperature"] = self.activation.temperature
+        np.savez(path, **data)
 
     @classmethod
     def load(cls, path: str) -> Neuron:
@@ -168,9 +169,9 @@ class Neuron:
             puvodni neuron pred ulozenim.
         """
         # assert  Ověřte, že soubor path existuje (napr. os.path.exists)
-        raise NotImplementedError(
-            "Úkol: nactete archiv pres np.load(path), precte 'weights' a "
-            "volitelne 'bias' (None pokud klic chybi), sestavte Linear(weights, bias), "
-            "pomoci make_activation('activation_name'[, temperature=...]) sestavte "
-            "aktivaci a vratte cls(linear, activation)."
-        )
+        with np.load(path) as data:
+            weights = data["weights"]
+            bias = data["bias"] if "bias" in data else None
+            name = str(data["activation_name"].item())
+            temperature = float(data["temperature"]) if "temperature" in data else 1.0
+        return cls(Linear(weights, bias), make_activation(name, temperature=temperature))

@@ -145,10 +145,9 @@ class XavierInit(WeightsInitializer):
             Matice tvaru `(n_inputs, n_units)`.
         """
         # assert  Ověřte, že n_inputs i n_units jsou alespon 1
-        raise NotImplementedError(
-            "Úkol: spocitejte limit = np.sqrt(6.0 / (n_inputs + n_units)) a vratte "
-            "self.rng.uniform(-limit, limit, size=(n_inputs, n_units))."
-        )
+        assert n_inputs >= 1 and n_units >= 1
+        limit = np.sqrt(6.0 / (n_inputs + n_units))
+        return self.rng.uniform(-limit, limit, size=(n_inputs, n_units))
 
 
 class HeInit(WeightsInitializer):
@@ -176,10 +175,9 @@ class HeInit(WeightsInitializer):
             Matice tvaru `(n_inputs, n_units)`.
         """
         # assert  Ověřte, že n_inputs i n_units jsou alespon 1
-        raise NotImplementedError(
-            "Úkol: (BONUS) spocitejte limit = np.sqrt(6.0 / n_inputs) a vratte "
-            "self.rng.uniform(-limit, limit, size=(n_inputs, n_units))."
-        )
+        assert n_inputs >= 1 and n_units >= 1
+        limit = np.sqrt(6.0 / n_inputs)
+        return self.rng.uniform(-limit, limit, size=(n_inputs, n_units))
 
 
 class PyTorchDefaultInit(WeightsInitializer):

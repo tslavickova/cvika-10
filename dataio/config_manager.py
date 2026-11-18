@@ -150,9 +150,8 @@ def validate_config(cfg: ExperimentConfig) -> None:
 
     if any(k < 1 for k in cfg.network.hidden_units):
         raise ValueError(
-            f"network.hidden_units musi obsahovat jen cela cisla >= 1, zadano: {
-                cfg.network.hidden_units
-                }"
+            f"network.hidden_units musi obsahovat jen cela cisla >= 1, "
+            f"zadano: {cfg.network.hidden_units}"
         )
     if cfg.network.initializer not in ALLOWED_INITIALIZERS:
         raise ValueError(

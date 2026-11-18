@@ -117,9 +117,8 @@ class MSE(Loss):
             Hodnota MSE (python `float`).
         """
         # assert  Ověřte, že prediction a target maji stejny tvar
-        raise NotImplementedError(
-            "Úkol: vratte float(np.mean((target - prediction) ** 2))."
-        )
+        assert prediction.shape == target.shape
+        return float(np.mean((target - prediction) ** 2))
 
     def gradient(self, prediction: np.ndarray, target: np.ndarray) -> np.ndarray:
         """Vypocte gradient MSE podle vystupu site.
@@ -144,9 +143,8 @@ class MSE(Loss):
             Pole stejneho tvaru jako `prediction`.
         """
         # assert  Ověřte, že prediction a target maji stejny tvar
-        raise NotImplementedError(
-            "Úkol: vratte 2.0 * (prediction - target) / prediction.size."
-        )
+        assert prediction.shape == target.shape
+        return 2.0 * (prediction - target) / prediction.size
 
 
 class BCE(Loss):
@@ -189,10 +187,10 @@ class BCE(Loss):
         """
         # assert  Ověřte, že prediction a target maji stejny tvar
         # assert  Ověřte, že hodnoty target lezi v intervalu [0, 1]
-        raise NotImplementedError(
-            "Úkol: oriznete p = np.clip(prediction, self.eps, 1 - self.eps) a vratte "
-            "float(-np.mean(target * np.log(p) + (1 - target) * np.log(1 - p)))."
-        )
+        assert prediction.shape == target.shape
+        assert np.all((target >= 0) & (target <= 1))
+        p = np.clip(prediction, self.eps, 1 - self.eps)
+        return float(-np.mean(target * np.log(p) + (1 - target) * np.log(1 - p)))
 
     def gradient(self, prediction: np.ndarray, target: np.ndarray) -> np.ndarray:
         """Vypocte gradient BCE podle vystupu site.
@@ -218,10 +216,9 @@ class BCE(Loss):
             Pole stejneho tvaru jako `prediction`.
         """
         # assert  Ověřte, že prediction a target maji stejny tvar
-        raise NotImplementedError(
-            "Úkol: oriznete p = np.clip(prediction, self.eps, 1 - self.eps) a vratte "
-            "(p - target) / (p * (1 - p)) / prediction.size."
-        )
+        assert prediction.shape == target.shape
+        p = np.clip(prediction, self.eps, 1 - self.eps)
+        return (p - target) / (p * (1 - p)) / prediction.size
 
 
 # Registr jmen ztrat (klic `loss` v config.yaml) na tridy.
